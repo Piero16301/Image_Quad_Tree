@@ -88,6 +88,8 @@ CImg <char> Binarizar(CImg<float> & img, int umbral) {
 int main() {
     CImg <float> A("../imagen.jpeg");
     CImg <char> R =  Binarizar(A,40);
+    QuadTree quadTree;
+    quadTree.loadImage(R);
     /*for(int i = 0; i < R.width(); i++){
         for(int j = 0; j < R.height(); j++){
             cout << setw(2) << R(i, j);
