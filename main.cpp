@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #define cimg_use_jpeg
 #include "CImg.h"
@@ -23,11 +24,12 @@ class QuadTree{
 private:
     Node* root;
 
-    static bool isUniqueColor(Node* &qNode, CImg <char> &R){
-        char color = R(qNode->quad.first.first,qNode->quad.first.second);
+    static bool isUniqueColor(Node* &qNode, CImg <int> &R){
+        int color = R(qNode->quad.first.first,qNode->quad.first.second);
         for (int i = qNode->quad.first.first; i <= qNode->quad.second.first; i++) {
             for (int j = qNode->quad.first.second; j <= qNode->quad.second.second; j++) {
                 if (R(i,j) != color) {
+                    cout << i << ' ' << j << ':' << R(i,j) << endl;
                     return false;
                 }
             }
@@ -35,9 +37,9 @@ private:
         return true;
     }
 
-    void insertRecursive(Node* &qNode, CImg <char> &R){
+    void insertRecursive(Node* &qNode, CImg <int> &R){
         if(isUniqueColor(qNode, R)){
-            qNode->color = R(qNode->quad.first.first, qNode->quad.first.second) != '0';
+            qNode->color = R(qNode->quad.first.first, qNode->quad.first.second) != 0;
             return;
         }
         int midX = (qNode->quad.second.first-qNode->quad.first.first)/2;
@@ -55,23 +57,23 @@ private:
 public:
     QuadTree() : root{nullptr} {};
 
-    void loadImage(CImg <char> &R) {
-        this->root = new Node({0,0},{R.width(),R.height()});
+    void loadImage(CImg <int> &R) {
+        this->root = new Node({0,0},{R.width()-1,R.height()-1});
         insertRecursive(this->root, R);
     }
 };
 
-CImg <char> Binarizar(CImg <float> &img, int umbral) {
-    CImg <char> R(img.width(),img.height());
+CImg <int> Binarizar(CImg <float> &img, int umbral) {
+    CImg <int> R(img.width(),img.height());
     for(int i=0;i< img.width();i++) {
         for (int j = 0; j < img.height(); j++) {
             int r = img(i, j, 0);
             int g = img(i, j, 1);
             int b = img(i, j, 2);
             if ((r + g + b) / 3 > umbral) {
-                R(i, j) = 49;
+                R(i, j) = 1;
             } else {
-                R(i, j) = 48;
+                R(i, j) = 0;
             }
         }
     }
@@ -79,8 +81,8 @@ CImg <char> Binarizar(CImg <float> &img, int umbral) {
 }
 
 int main() {
-    CImg <float> A("../imagen_2.jpg");
-    CImg <char> R =  Binarizar(A,20);
+    CImg <float> A("../black2.jpg");
+    CImg <int> R =  Binarizar(A,20);
     QuadTree quadTree;
     quadTree.loadImage(R);
     cout << "FIN" << endl;
@@ -89,8 +91,7 @@ int main() {
             cout << setw(2) << R(i, j);
         }
         cout << "\n";
-    }
-    */
+    }*/
 
     //A.display();
     //R.display();
