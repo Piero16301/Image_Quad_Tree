@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iomanip>
 
 #define cimg_use_jpeg
 #include "CImg.h"
@@ -9,12 +8,12 @@ using namespace std;
 
 struct Node{
     pair<pair<int, int>, pair<int, int>> quad;
-    Node* m_pSon[4];
+    Node* m_pSon[4]{};
     bool color;
     Node(pair<int, int> a, pair<int, int>b){
         quad = {a, b};
-        for(int i = 0; i < 4; i++){
-            m_pSon[i] = nullptr;
+        for(auto & i : m_pSon){
+            i = nullptr;
         }
         color = false;
     }
@@ -57,18 +56,12 @@ public:
     QuadTree() : root{nullptr} {};
 
     void loadImage(CImg <char> &R) {
-        this->root->m_pSon[0] = new Node({0,0},{R.width()/2, R.height()/2});
-        this->root->m_pSon[1] = new Node({R.width()/2+1,0},{R.width(), R.height()/2});
-        this->root->m_pSon[2] = new Node({0,R.height()/2 + 1},{R.width()/2, R.height()});
-        this->root->m_pSon[3] = new Node({R.width()/2 + 1,R.height() + 1},{R.width(), R.height()});
-        insertRecursive(this->root->m_pSon[0],R);
-        insertRecursive(this->root->m_pSon[1],R);
-        insertRecursive(this->root->m_pSon[2],R);
-        insertRecursive(this->root->m_pSon[3],R);
+        this->root = new Node({0,0},{R.width(),R.height()});
+        insertRecursive(this->root, R);
     }
 };
 
-CImg <char> Binarizar(CImg<float> & img, int umbral) {
+CImg <char> Binarizar(CImg <float> &img, int umbral) {
     CImg <char> R(img.width(),img.height());
     for(int i=0;i< img.width();i++) {
         for (int j = 0; j < img.height(); j++) {
@@ -86,10 +79,11 @@ CImg <char> Binarizar(CImg<float> & img, int umbral) {
 }
 
 int main() {
-    CImg <float> A("../imagen.jpeg");
-    CImg <char> R =  Binarizar(A,40);
+    CImg <float> A("../imagen_2.jpg");
+    CImg <char> R =  Binarizar(A,20);
     QuadTree quadTree;
     quadTree.loadImage(R);
+    cout << "FIN" << endl;
     /*for(int i = 0; i < R.width(); i++){
         for(int j = 0; j < R.height(); j++){
             cout << setw(2) << R(i, j);
@@ -101,5 +95,5 @@ int main() {
     //A.display();
     //R.display();
 
-    return 1;
+    return 0;
 }
