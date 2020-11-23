@@ -6,6 +6,6 @@ set(CMAKE_CXX_FLAGS "-lX11")
 set(CMAKE_CXX_FLAGS "-lpthread")
 set(CMAKE_CXX_FLAGS "-ljpeg")
 
-add_executable(Image_Quad_Tree main.cpp)
+add_executable(Image_Quad_Tree main.cpp QuadTree.h QuadTree.cpp Node.h Node.cpp)
 
 target_link_libraries(Image_Quad_Tree -lX11 -lpthread -ljpeg)
