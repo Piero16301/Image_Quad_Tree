@@ -2,7 +2,7 @@
 #define IMAGE_QUAD_TREE_QUADTREE_H
 
 #include <fstream>
-
+#include <vector>
 #define cimg_use_jpeg
 #include "CImg.h"
 #include "Node.h"

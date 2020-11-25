@@ -128,5 +128,7 @@ void QuadTree::buildImage(const string &path) {
 }
 
 QuadTree::~QuadTree() {
-    this->root->killSelf();
+    if(this->root){
+        this->root->killSelf();
+    }
 }
