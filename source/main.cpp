@@ -1,5 +1,6 @@
 #include <iostream>
 
+#define color_image
 #include "QuadTree.h"
 
 int main() {
@@ -7,6 +8,6 @@ int main() {
     quadTree.loadImage("../../images/cuadrados.jpg");
     quadTree.exportTree("../../binaries/quad_tree.dat");
     quadTree.buildImage("../../binaries/quad_tree.dat");
-    cout << "SUCCESS FINISH" << endl;
+    cout << "SUCCESSFUL FINISH" << endl;
     return 0;
 }

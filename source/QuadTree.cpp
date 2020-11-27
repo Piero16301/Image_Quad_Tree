@@ -5,6 +5,17 @@ QuadTree::QuadTree() {
 }
 
 bool QuadTree::isUniqueColor(Node *&qNode, CImg<int> &R) {
+#ifdef black_and_white_image
+    int color = R(qNode->quad.first.first,qNode->quad.first.second);
+    for (int i = qNode->quad.first.first; i <= qNode->quad.second.first; i++) {
+        for (int j = qNode->quad.first.second; j <= qNode->quad.second.second; j++) {
+            if (R(i,j) != color) {
+                return false;
+            }
+        }
+    }
+    return true;
+#else
     int rcolor = R(qNode->quad.first.first,qNode->quad.first.second, 0, 0);
     int gcolor = R(qNode->quad.first.first,qNode->quad.first.second, 0, 1);
     int bcolor = R(qNode->quad.first.first,qNode->quad.first.second, 0, 2);
@@ -16,14 +27,18 @@ bool QuadTree::isUniqueColor(Node *&qNode, CImg<int> &R) {
         }
     }
     return true;
+#endif
 }
 
-void QuadTree::insertRecursive(Node *&qNode, CImg<int> &R) {
+void QuadTree::insertRecursive(Node* &qNode, CImg<int> &R) {
     if(isUniqueColor(qNode, R)){
-        //qNode->color = R(qNode->quad.first.first, qNode->quad.first.second) != 0;
+#ifdef black_and_white_image
+        qNode->color = R(qNode->quad.first.first, qNode->quad.first.second) != 0;
+#else
         qNode->rcolor = R(qNode->quad.first.first, qNode->quad.first.second, 0, 0);
         qNode->gcolor = R(qNode->quad.first.first, qNode->quad.first.second, 0, 1);
         qNode->bcolor = R(qNode->quad.first.first, qNode->quad.first.second, 0, 2);
+#endif
         return;
     }
     int midX = (qNode->quad.second.first-qNode->quad.first.first)/2;
@@ -52,10 +67,13 @@ void QuadTree::writeRecursive(ofstream &output, Node* &node) {
 void QuadTree::fillQuad(Node &node, CImg <int> &image) {
     for (int i = node.quad.first.first; i <= node.quad.second.first; i++) {
         for (int j = node.quad.first.second; j <= node.quad.second.second; j++) {
-            //image(i,j) = ((node.color) ? 1 : 0);
+#ifdef black_and_white_image
+            image(i,j) = ((node.color) ? 1 : 0);
+#else
             image(i, j, 0, 0) = node.rcolor;
             image(i, j, 0, 1) = node.gcolor;
             image(i, j, 0, 2) = node.bcolor;
+#endif
         }
     }
 }
@@ -110,9 +128,11 @@ CImg<int> QuadTree::binarizeColors(CImg<float>& img){
 
 void QuadTree::loadImage(const string& path) {
     CImg <float> A(path.c_str());
-    //CImg <int> R = binarize(A,20);
+#ifdef black_and_white_image
+    CImg <int> R = binarize(A,20);
+#else
     CImg <int> R = binarizeColors(A);
-    //R.display("Basic Colors");
+#endif
     this->root = new Node({0,0},{R.width()-1,R.height()-1});
     insertRecursive(this->root, R);
 }
