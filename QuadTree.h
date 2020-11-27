@@ -21,9 +21,13 @@ protected:
 
     void writeRecursive(ofstream &output, Node* &node);
 
-    static void fillQuad(ifstream &input, Node &node, CImg <int> &image);
+    static void fillQuad(Node &node, CImg <int> &image);
 
     static CImg <int> binarize(CImg <float> &img, int umbral);
+
+    static CImg <int> binarizeColors(CImg <float> &img);
+
+    static int getBasicColor(int color);
 
 public:
     QuadTree();
