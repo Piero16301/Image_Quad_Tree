@@ -5,7 +5,10 @@ Node::Node(pair<int, int> a, pair<int, int> b) {
     for (auto &i : this->m_pSon) {
         i = nullptr;
     }
-    this->color = false;
+    //this->color = false;
+    this->rcolor = 0;
+    this->gcolor = 0;
+    this->bcolor = 0;
 }
 
 void Node::killSelf() {
