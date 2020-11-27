@@ -34,3 +34,4 @@
 # CLion folders
 source/cmake-build-debug/
 source/.idea/
+source/CMakeLists.txt
