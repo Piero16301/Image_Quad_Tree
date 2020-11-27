@@ -93,7 +93,7 @@ int QuadTree::getBasicColor(int color){
 }
 
 CImg<int> QuadTree::binarizeColors(CImg<float>& img){
-    CImg<int> imgResult(img.width(),img.height());
+    CImg<int> imgResult(img.width(),img.height(), 1, 3, 0);
     cimg_forXY(img, x, y){
             int R = (int)img(x, y, 0, 0);
             int G = (int)img(x, y, 0, 1);
@@ -101,11 +101,11 @@ CImg<int> QuadTree::binarizeColors(CImg<float>& img){
             int rnew = getBasicColor(R);
             int gnew = getBasicColor(G);
             int bnew = getBasicColor(B);
-            img(x, y, 0, 0) = rnew;
-            img(x, y, 0, 1) = gnew;
-            img(x, y, 0, 2) = bnew;
+            imgResult(x, y, 0, 0) = rnew;
+            imgResult(x, y, 0, 1) = gnew;
+            imgResult(x, y, 0, 2) = bnew;
         }
-    return img;
+    return imgResult;
 }
 
 void QuadTree::loadImage(const string& path) {
