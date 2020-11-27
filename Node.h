@@ -9,7 +9,7 @@ class QuadTree;
 
 class Node {
 private:
-    pair <pair <int,int>,pair<int,int>> quad;
+    pair <pair <unsigned short int, unsigned short int>,pair<unsigned short int,unsigned short int>> quad;
     Node* m_pSon[4]{};
     //bool color{};
     unsigned char rcolor{};
