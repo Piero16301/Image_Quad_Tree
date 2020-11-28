@@ -35,3 +35,6 @@
 source/cmake-build-debug/
 source/.idea/
 source/CMakeLists.txt
+.idea/
+CMakeLists.txt
+cmake-build-debug

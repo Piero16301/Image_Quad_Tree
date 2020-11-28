@@ -11,13 +11,9 @@ class Node {
 private:
     pair <pair <unsigned short int, unsigned short int>,pair<unsigned short int,unsigned short int>> quad;
     Node* m_pSon[4]{};
-#ifdef black_and_white_image
-    bool color{};
-#else
     unsigned char rcolor{};
     unsigned char gcolor{};
     unsigned char bcolor{};
-#endif
 
 protected:
     void killSelf();

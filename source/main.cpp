@@ -1,6 +1,5 @@
 #include <iostream>
 
-#define color_image
 #include "QuadTree.h"
 
 int main() {
