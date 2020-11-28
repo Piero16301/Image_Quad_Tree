@@ -41,7 +41,11 @@ void QuadTree::insertRecursive(Node* &qNode, CImg<int> &R) {
 void QuadTree::writeRecursive(ofstream &output, Node* &node) {
     if (node->m_pSon[0] == nullptr) {
         Node temp = Node(*node);
-        output.write((char*)&temp, sizeof(Node));
+        //output.write((char*)&temp, sizeof(Node));
+        output.write((char*)&temp.quad, sizeof(temp.quad));
+        output.write((char*)&temp.rcolor, sizeof(temp.rcolor));
+        output.write((char*)&temp.gcolor, sizeof(temp.gcolor));
+        output.write((char*)&temp.bcolor, sizeof(temp.bcolor));
         return;
     }
     for (auto &i : node->m_pSon) {
@@ -147,9 +151,19 @@ void QuadTree::buildImage(const string &path) {
     Node current({0,0},{0,0});
 
     // Read nodes until end of file
-    while (input.read((char*)&current, sizeof(Node))) {
+    /*while (input.read((char*)&current, sizeof(Node))) {
         nodes.push_back(current);
     }
+    */
+
+    while(input.peek() != EOF){
+        input.read((char*)&current.quad, sizeof(current.quad));
+        input.read((char*)&current.rcolor, sizeof(current.rcolor));
+        input.read((char*)&current.gcolor, sizeof(current.gcolor));
+        input.read((char*)&current.bcolor, sizeof(current.bcolor));
+        nodes.push_back(current);
+    }
+
     input.close();
 
     // Construct CImg from readed nodes
